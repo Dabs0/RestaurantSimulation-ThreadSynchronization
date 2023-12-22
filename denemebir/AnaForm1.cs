@@ -21,7 +21,9 @@ namespace denemebir
         Random rand = new Random();
         public static List<Label> butonLabelleri = new List<Label>();
         public static List<Button> chefButton = new List<Button>();
+        public static List<Button> garsonButton = new List<Button>();
         public static List<Label> asciButonLabel = new List<Label>();
+        public static List<Label> garsonButonLabel = new List<Label>();
         static TabControl tab;
         static Panel asciPanel;
         static Panel garsonPanel;
@@ -125,14 +127,14 @@ namespace denemebir
                 chefButon.BackColor = Color.DarkSeaGreen;
                 chefButon.Text = chefs[i].Name;
                 chefButon.Width = 300;
-                chefButon.Height = 200;
+                chefButon.Height = 100;
                 chefButon.Location = new Point(asciPanel.Size.Width / 3, i * (asciPanel.Size.Height / (chefs.Count + 1)));
 
                 Label butonEtiketi = new Label();
                 butonEtiketi.Name = chefs[i].Name;
                 butonEtiketi.BackColor = Color.White;
                 butonEtiketi.Size = new System.Drawing.Size(200, 20);
-                butonEtiketi.Location = new System.Drawing.Point(chefButon.Location.X + 70, chefButon.Location.Y + 120);
+                butonEtiketi.Location = new System.Drawing.Point(chefButon.Location.X + 50, chefButon.Location.Y + 70);
                 asciButonLabel.Add(butonEtiketi);
                 asciPanel.Controls.Add(butonEtiketi); // Panel'e Label'i ekle
                 asciPanel.Controls.Add(chefButon); // Panel'e Button'u ekle
@@ -161,26 +163,26 @@ namespace denemebir
 
 
 
-            for (int i = 0; i < chefs.Count; i++)
+            for (int i = 0; i < waiters.Count; i++)
             {
 
-                Button chefButon = new Button();
-                chefButon.Name = chefs[i].Name;
-                chefButon.BackColor = Color.DarkSeaGreen;
-                chefButon.Text = chefs[i].Name;
-                chefButon.Width = 300;
-                chefButon.Height = 200;
-                chefButon.Location = new Point(asciPanel.Size.Width / 3, i * (asciPanel.Size.Height / (chefs.Count + 1)));
+                Button waiterButon = new Button();
+                waiterButon.Name = waiters[i].Name;
+                waiterButon.BackColor = Color.DarkSeaGreen;
+                waiterButon.Text = waiters[i].Name;
+                waiterButon.Width = 300;
+                waiterButon.Height =100;
+                waiterButon.Location = new Point(garsonPanel.Size.Width / 5, i * (garsonPanel.Size.Height / (waiters.Count + 1)));
 
                 Label butonEtiketi = new Label();
-                butonEtiketi.Name = chefs[i].Name;
+                butonEtiketi.Name = waiters[i].Name;
                 butonEtiketi.BackColor = Color.White;
                 butonEtiketi.Size = new System.Drawing.Size(200, 20);
-                butonEtiketi.Location = new System.Drawing.Point(chefButon.Location.X + 70, chefButon.Location.Y + 120);
-                asciButonLabel.Add(butonEtiketi);
-                asciPanel.Controls.Add(butonEtiketi); // Panel'e Label'i ekle
-                asciPanel.Controls.Add(chefButon); // Panel'e Button'u ekle
-                chefButton.Add(chefButon);
+                butonEtiketi.Location = new System.Drawing.Point(waiterButon.Location.X + 50, waiterButon.Location.Y + 70);
+                garsonButonLabel.Add(butonEtiketi);
+                garsonPanel.Controls.Add(butonEtiketi); // Panel'e Label'i ekle
+                garsonPanel.Controls.Add(waiterButon); // Panel'e Button'u ekle
+                garsonButton.Add(waiterButon);
 
 
 
@@ -218,6 +220,7 @@ namespace denemebir
             mainPanel.Controls.Add(masalarPanel);
 
             MasaAnimasyonPaneliEkle();
+            
 
 
 

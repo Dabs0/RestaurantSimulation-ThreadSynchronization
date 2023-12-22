@@ -88,7 +88,7 @@ namespace denemebir
     public class Waiter
         {
             int Id;
-            string Name;
+            public string Name;
             private Thread waiterThread;
             public bool shouldStop = false;
             public Waiter(int id, string name)
@@ -97,7 +97,7 @@ namespace denemebir
                 Name = name;
                 waiterThread = new Thread(SeekOrderLoop);
             }
-
+            
             public void seekOrder()
             {
                 Console.WriteLine($"Garson {Name} , sipariş arıyor...");
@@ -116,9 +116,12 @@ namespace denemebir
             {
                 customers.FirstOrDefault(c => c.Id == tableStatus[tableID]).status = customerStatus.Ordering;
                 Console.WriteLine($"Garson {Name} , {tableID}. Masadan sipariş alıyor...");
+                Button p = AnaForm1.garsonButton.FirstOrDefault(c => c.Name == this.Name);
+                garsonuMesgulYap(p, tableID);
                 Thread.Sleep(5000);
                 customers.FirstOrDefault(c => c.Id == tableStatus[tableID]).status = customerStatus.Ordered;
                 Console.WriteLine($"Garson {Name} , {tableID}. Masadan sipariş aldı...");
+                garsonuMesguldenCikar(p, tableID);
             }
             public void StartWorking()
             {
@@ -138,6 +141,56 @@ namespace denemebir
                     seekOrder();
                     Thread.Sleep(3000);
                 }
+            }
+            public void garsonuMesgulYap(Button p, int tableId)
+            {
+                foreach (var b in AnaForm1.garsonButton)
+                {
+                    if (b == p)
+                    {
+                        b.BackColor = Color.Red;
+                        break;
+
+                    }
+
+                }
+                foreach (var c in AnaForm1.garsonButonLabel)
+                {
+
+                    if (c.Name == p.Name)
+                    {
+                        string s = $"{tableId} numaralı masadan sipariş alınıyor";
+                        Customer.SetLabelText(c, s);
+
+                    }
+                }
+
+
+            }
+            public void garsonuMesguldenCikar(Button p, int tableId)
+            {
+                foreach (var b in AnaForm1.garsonButton)
+                {
+                    if (b == p)
+                    {
+                        b.BackColor = Color.DarkSeaGreen;
+                        break;
+
+                    }
+
+                }
+                foreach (var c in AnaForm1.garsonButonLabel)
+                {
+
+                    if (c.Name == p.Name)
+                    {
+                        string s = $"SİPARİŞ BEKLENİYOR";
+                        Customer.SetLabelText(c, s);
+
+                    }
+                }
+
+
             }
 
 
@@ -448,7 +501,8 @@ namespace denemebir
             sef2Thread.Start();
 
             AnaForm1.AsciAnimasyonPaneliEkle();
-            
+            AnaForm1.GarsonAnimasyonPaneliEkle();
+
 
 
 
