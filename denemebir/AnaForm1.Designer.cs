@@ -34,7 +34,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1273, 529);
+            ClientSize = new Size(1584, 961);
             Name = "AnaForm1";
             Text = "AnaForm1";
             ResumeLayout(false);

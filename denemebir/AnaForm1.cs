@@ -7,25 +7,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using static denemebir.main1;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace denemebir
 {
     public partial class AnaForm1 : Form
     {
-        static Random random = new Random();   
+        static Random random = new Random();
         public static List<Masa> masalar = new List<Masa>();
         public static List<Button> masalarButton = new List<Button>();
         Random rand = new Random();
         public static List<Label> butonLabelleri = new List<Label>();
-        public static List<Button> chefButton =  new List<Button>();
+        public static List<Button> chefButton = new List<Button>();
         public static List<Label> asciButonLabel = new List<Label>();
         static TabControl tab;
+        static Panel asciPanel;
+        static Panel garsonPanel;
+        static Panel masalarPanel;
+        static Panel siraPanel;
+        static Panel mainPanel;
         public AnaForm1()
         {
             InitializeComponent();
             this.Load += AnaForm_Load;
-          //  garsonOlustur();
+            //  garsonOlustur();
         }
         public static void asciOlustur()
         {
@@ -38,11 +45,11 @@ namespace denemebir
     "Mustafa",
 };
             int id = 1;
-            for(int i = 0; i < main1.chefCount; i++)
+            for (int i = 0; i < main1.chefCount; i++)
             {
                 Chef chef = new Chef(id, isimler.ElementAt(random.Next(0, isimler.Count)));
                 chefs.Add(chef);
-                
+
                 id++;
             }
 
@@ -50,11 +57,12 @@ namespace denemebir
         }
         public static void MasaAnimasyonPaneliEkle()
         {
-            TabPage tabPage = new TabPage("Masalar"); // Yeni bir TabPage oluşturun
+            //TabPage tabPage = new TabPage("Masalar"); // Yeni bir TabPage oluşturun
 
-            Panel panel = new Panel();
-            panel.Dock = DockStyle.Fill; // Paneli TabPage'in tamamına yayın
-            tabPage.Controls.Add(panel); // Paneli TabPage'e ekle
+            
+
+            // Paneli TabPage'in tamamına yayın
+            //tabPage.Controls.Add(masalarPanel); // Paneli TabPage'e ekle
 
             for (int i = 0; i < main1.tableCount; i++)
             {
@@ -62,35 +70,26 @@ namespace denemebir
                 masalar.Add(masa);
             }
 
-            int xPos = 220;
-            int yPos = 80;
 
-            foreach (var masa in masalar)
+
+            for (int i = 0; i < masalar.Count; i++)
             {
                 Button masaButton = new Button();
-                masaButton.Text = "Masa " + masa.id;
+                masaButton.Text = "Masa " + masalar[i].id;
                 masaButton.Width = 200;
                 masaButton.Height = 100;
-                masaButton.Location = new Point(xPos, yPos);
+                masaButton.Location = new Point(masalarPanel.Size.Width / 3, i * (masalarPanel.Size.Height / (masalar.Count + 1)));
 
                 Label butonEtiketi = new Label();
                 butonEtiketi.BackColor = Color.White;
                 butonEtiketi.Size = new System.Drawing.Size(100, 20);
                 butonEtiketi.Location = new System.Drawing.Point(masaButton.Location.X + 50, masaButton.Location.Y + 70);
                 butonLabelleri.Add(butonEtiketi);
-                panel.Controls.Add(butonEtiketi); // Panel'e Label'i ekle
-                panel.Controls.Add(masaButton); // Panel'e Button'u ekle
+                masalarPanel.Controls.Add(butonEtiketi); // Panel'e Label'i ekle
+                masalarPanel.Controls.Add(masaButton); // Panel'e Button'u ekle
                 masalarButton.Add(masaButton);
 
-                if (masa.id == 3)
-                {
-                    xPos = 220;
-                    yPos = 200;
-                }
-                else
-                {
-                    xPos += 400;
-                }
+
             }
 
             masalariBoya();
@@ -99,53 +98,96 @@ namespace denemebir
             Button baslaButton = new Button();
             baslaButton.Text = "BAŞLA";
 
-            baslaButton.Location = new Point(700, 400);
+            baslaButton.Location = new Point(masalarPanel.Size.Width / 2, masalarPanel.Size.Height - 100);
             baslaButton.Click += BaslaButton_Click;
-            panel.Controls.Add(baslaButton);
+            masalarPanel.Controls.Add(baslaButton);
 
-            tab.TabPages.Add(tabPage); // TabPage'i TabControl'e ekle
+            //tab.TabPages.Add(tabPage); // TabPage'i TabControl'e ekle
         }
 
         public static void AsciAnimasyonPaneliEkle()
         {
-            TabPage tabPage = new TabPage("Aşçılar"); // Yeni bir TabPage oluşturun
+            //TabPage tabPage = new TabPage("Aşçılar"); // Yeni bir TabPage oluşturun
 
-            Panel panel = new Panel();
+            /*Panel panel = new Panel();
             panel.Dock = DockStyle.Fill; // Paneli TabPage'in tamamına yayın
-            tabPage.Controls.Add(panel); // Paneli TabPage'e ekle
+            tabPage.Controls.Add(panel); // Paneli TabPage'e ekle*/
 
-           
 
-            int xPos = 220;
-            int yPos = 80;
 
-           foreach(var chef in chefs)
+            
+
+            for(int i=0;i<waiters.Count;i++)
             {
 
                 Button chefButon = new Button();
-                chefButon.Name = chef.Name;
+                chefButon.Name = chefs[i].Name;
                 chefButon.BackColor = Color.DarkSeaGreen;
-                chefButon.Text = chef.Name;
+                chefButon.Text = chefs[i].Name;
                 chefButon.Width = 300;
                 chefButon.Height = 200;
-                chefButon.Location = new Point(xPos, yPos);
+                chefButon.Location = new Point(asciPanel.Size.Width / 3, i * (asciPanel.Size.Height / (chefs.Count + 1)));
 
                 Label butonEtiketi = new Label();
-                butonEtiketi.Name = chef.Name;
+                butonEtiketi.Name = chefs[i].Name;
                 butonEtiketi.BackColor = Color.White;
                 butonEtiketi.Size = new System.Drawing.Size(200, 20);
                 butonEtiketi.Location = new System.Drawing.Point(chefButon.Location.X + 70, chefButon.Location.Y + 120);
                 asciButonLabel.Add(butonEtiketi);
-                panel.Controls.Add(butonEtiketi); // Panel'e Label'i ekle
-                panel.Controls.Add(chefButon); // Panel'e Button'u ekle
+                asciPanel.Controls.Add(butonEtiketi); // Panel'e Label'i ekle
+                asciPanel.Controls.Add(chefButon); // Panel'e Button'u ekle
                 chefButton.Add(chefButon);
 
 
-                xPos += 400;
+                
             }
 
 
-            tab.TabPages.Add(tabPage); // TabPage'i TabControl'e ekle
+            //tab.TabPages.Add(tabPage); // TabPage'i TabControl'e ekle
+
+
+
+
+        }
+        public static void GarsonAnimasyonPaneliEkle()
+        {
+            //TabPage tabPage = new TabPage("Aşçılar"); // Yeni bir TabPage oluşturun
+
+            /*Panel panel = new Panel();
+            panel.Dock = DockStyle.Fill; // Paneli TabPage'in tamamına yayın
+            tabPage.Controls.Add(panel); // Paneli TabPage'e ekle*/
+
+
+
+
+
+            for (int i = 0; i < chefs.Count; i++)
+            {
+
+                Button chefButon = new Button();
+                chefButon.Name = chefs[i].Name;
+                chefButon.BackColor = Color.DarkSeaGreen;
+                chefButon.Text = chefs[i].Name;
+                chefButon.Width = 300;
+                chefButon.Height = 200;
+                chefButon.Location = new Point(asciPanel.Size.Width / 3, i * (asciPanel.Size.Height / (chefs.Count + 1)));
+
+                Label butonEtiketi = new Label();
+                butonEtiketi.Name = chefs[i].Name;
+                butonEtiketi.BackColor = Color.White;
+                butonEtiketi.Size = new System.Drawing.Size(200, 20);
+                butonEtiketi.Location = new System.Drawing.Point(chefButon.Location.X + 70, chefButon.Location.Y + 120);
+                asciButonLabel.Add(butonEtiketi);
+                asciPanel.Controls.Add(butonEtiketi); // Panel'e Label'i ekle
+                asciPanel.Controls.Add(chefButon); // Panel'e Button'u ekle
+                chefButton.Add(chefButon);
+
+
+
+            }
+
+
+            //tab.TabPages.Add(tabPage); // TabPage'i TabControl'e ekle
 
 
 
@@ -153,21 +195,39 @@ namespace denemebir
         }
         private void AnaForm_Load(object sender, EventArgs e)
         {
-            tab = new TabControl();
+            /*tab = new TabControl();
             tab.Dock = DockStyle.Fill; // TabControl'ü formun tamamına yayın
-            this.Controls.Add(tab);
-           
+            this.Controls.Add(tab);*/
+            mainPanel = new Panel();
+            mainPanel.Dock = DockStyle.Fill;
+            this.Controls.Add(mainPanel);
+            asciPanel = new Panel();
+            asciPanel.Location = new Point(0, 0);
+            asciPanel.Size = new Size(400, 1000);
+            asciPanel.BorderStyle = BorderStyle.FixedSingle;
+            mainPanel.Controls.Add(asciPanel);
+            garsonPanel = new Panel();
+            garsonPanel.Location = new Point(400, 0);
+            garsonPanel.Size = new Size(400, 1000);
+            garsonPanel.BorderStyle = BorderStyle.FixedSingle;
+            mainPanel.Controls.Add(garsonPanel);
+            masalarPanel = new Panel();
+            masalarPanel.Location = new Point(800, 0);
+            masalarPanel.Size = new Size(400, 1000);
+            masalarPanel.BorderStyle = BorderStyle.FixedSingle;
+            mainPanel.Controls.Add(masalarPanel);
+
             MasaAnimasyonPaneliEkle();
-            
-           
-           
+
+
+
         }
 
         private static void BaslaButton_Click(object sender, EventArgs e)
         {
             main1 main = new main1();
             main1.Main();
-           
+
 
         }
 

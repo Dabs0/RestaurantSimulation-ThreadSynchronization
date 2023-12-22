@@ -16,6 +16,7 @@ namespace denemebir
         static int[] tableStatus = new int[tableCount];//boşken -1 değilken müşterinin id'si
         static List<Customer> customers = new List<Customer>();
         public static List<Chef> chefs = new List<Chef>();
+        public static List<Waiter> waiters = new List<Waiter>();
 
         public enum customerStatus
         {
@@ -426,10 +427,13 @@ namespace denemebir
             customerGenerator.Start();
 
             Waiter garson1 = new Waiter(0, "Ali");
+            waiters.Add(garson1);
             Thread garson1Thread = new Thread(garson1.StartWorking);
+            
             garson1Thread.Start();
             Thread.Sleep(1000);
             Waiter garson2 = new Waiter(1, "Kazım");
+            waiters.Add(garson2);
             Thread garson2Thread = new Thread(garson2.StartWorking);
             garson2Thread.Start();
             Thread.Sleep(1000);
