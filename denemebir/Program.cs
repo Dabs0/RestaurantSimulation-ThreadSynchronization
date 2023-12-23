@@ -12,6 +12,7 @@ namespace denemebir
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             Application.Run(new AnaForm1());
+
         }
     }
 }

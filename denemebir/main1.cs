@@ -1,18 +1,21 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace denemebir
 {
     public class main1
     {
-        //SortedSet <Customer> customerQueue = new SortedSet<Customer>();
-        public static int tableCount = 6;
-        int waiterCount = 1;
-        public static int chefCount = 2;
+        public static SortedSet<Customer> customerQueue = new SortedSet<Customer>();
+        public static int tableCount = (int)AnaForm1.fieldTableCount.Value;
+        public static int waiterCount = (int)AnaForm1.fieldWaiterCount.Value;
+        public static int chefCount = (int)AnaForm1.fieldChefCount.Value;
         private static int totalCustomerCount = 0;
+        public static int maxCustomerCount = (int)AnaForm1.fieldCustomerCount.Value; // Belirli bir sayıya ulaşana kadar müşteri üretecek
         static int[] tableStatus = new int[tableCount];//boşken -1 değilken müşterinin id'si
         static List<Customer> customers = new List<Customer>();
         public static List<Chef> chefs = new List<Chef>();
@@ -57,6 +60,7 @@ namespace denemebir
                     Musteri = musteri;
                     BosMu = false;
                     Console.WriteLine($"{musteri.Name} masaya oturtuldu.");
+                    AnaForm1.Log($"{musteri.Name} masaya oturtuldu.");
 
                     int p = masa.id;
                     AnaForm1.masalarButton[p].BackColor = Color.Red;
@@ -65,6 +69,7 @@ namespace denemebir
                 else
                 {
                     Console.WriteLine("Masa dolu, başka bir masayı deneyin.");
+                    AnaForm1.Log("Masa dolu, başka bir masayı deneyin.");
                 }
             }
 
@@ -73,12 +78,15 @@ namespace denemebir
                 if (!BosMu)
                 {
                     Console.WriteLine($"{Musteri.Name} masadan ayrıldı.");
+                    AnaForm1.Log($"{Musteri.Name} masadan ayrıldı.");
                     Musteri = null;
                     masa.BosMu = true;
                 }
                 else
                 {
                     Console.WriteLine("Masada zaten kimse yok.");
+                    AnaForm1.Log("Masada zaten kimse yok.");
+
                 }
             }
         
@@ -101,6 +109,7 @@ namespace denemebir
             public void seekOrder()
             {
                 Console.WriteLine($"Garson {Name} , sipariş arıyor...");
+                AnaForm1.Log($"Garson {Name} , sipariş arıyor...");
                 for (int i = 0; i < tableCount; i++)
                 {
                     Random random = new Random();
@@ -116,11 +125,15 @@ namespace denemebir
             {
                 customers.FirstOrDefault(c => c.Id == tableStatus[tableID]).status = customerStatus.Ordering;
                 Console.WriteLine($"Garson {Name} , {tableID}. Masadan sipariş alıyor...");
+                AnaForm1.Log($"Garson {Name} , {tableID}. Masadan sipariş alıyor...");
+
                 Button p = AnaForm1.garsonButton.FirstOrDefault(c => c.Name == this.Name);
                 garsonuMesgulYap(p, tableID);
                 Thread.Sleep(5000);
                 customers.FirstOrDefault(c => c.Id == tableStatus[tableID]).status = customerStatus.Ordered;
                 Console.WriteLine($"Garson {Name} , {tableID}. Masadan sipariş aldı...");
+                AnaForm1.Log($"Garson {Name} , {tableID}. Masadan sipariş aldı...");
+
                 garsonuMesguldenCikar(p, tableID);
             }
             public void StartWorking()
@@ -230,6 +243,8 @@ namespace denemebir
             public void seekOrder()
             {
                 Console.WriteLine($"Aşçı {Name} , sipariş arıyor...");
+                AnaForm1.Log($"Aşçı {Name} , sipariş arıyor...");
+
                 for (int i = 0; i < tableCount; i++)
                 {
                     if (tableStatus[i] != -1 && customers.FirstOrDefault(c => c.Id == tableStatus[i]).status.Equals(customerStatus.Ordered))
@@ -295,11 +310,14 @@ namespace denemebir
             {
                 customers.FirstOrDefault(c => c.Id == tableStatus[tableID]).status = customerStatus.OrderInProcess;
                 Console.WriteLine($"Aşçı {Name} , {tableID}. Masanın siparişini pişiriyor...");
+                AnaForm1.Log($"Aşçı {Name} , {tableID}. Masanın siparişini pişiriyor...");
+
                 Button p = AnaForm1.chefButton.FirstOrDefault(c => c.Name == this.Name);
                 asciyiMesgulYap(p,tableID);
                 Thread.Sleep(5000);
                 customers.FirstOrDefault(c => c.Id == tableStatus[tableID]).status = customerStatus.Eating;
                 Console.WriteLine($"Aşçı {Name} , {tableID}. Masanın siparişini pişirdi...");
+                AnaForm1.Log($"Aşçı {Name} , {tableID}. Masanın siparişini pişirdi...");
                 asciyiMesguldenCikar(p, tableID);
             }
             public void cookOrder(int OrderId, int OrderId2)
@@ -345,17 +363,25 @@ namespace denemebir
             private void FindTableLoop()
             {
                 int tryCount = 0;
-                while (!shouldStop)
+                while (!shouldStop && customerQueue.ElementAt(0).Equals(this))
                 {
-                    Console.WriteLine($"{Name} masa arıyor");
+                    
+                        Console.WriteLine($"{Name} masa arıyor");
+                    AnaForm1.Log($"{Name} masa arıyor");
+
                     if (tryCount == 5)
-                    {
+                        {
+                            customerQueue.Remove(this);
+                            Console.WriteLine($"{this.Name} boş masa bulamadı. Ayrılıyor.");
+                        AnaForm1.Log($"{this.Name} boş masa bulamadı. Ayrılıyor.");
                         leave();
-                        break;
-                    }
-                    findTable();
-                    tryCount++;
-                    Thread.Sleep(3000);
+                            break;
+                        }
+                        findTable();
+                        tryCount++;
+                        Thread.Sleep(3000);
+                    
+                    
                 }
             }
             public void Eat(int masaId)
@@ -365,6 +391,7 @@ namespace denemebir
                     if (status == customerStatus.Eating)
                     {
                         Console.WriteLine($"{Name} {status}");
+                        AnaForm1.Log($"{Name} {status}");
 
                         Thread.Sleep(1000);
                         status = customerStatus.Ate;
@@ -378,6 +405,7 @@ namespace denemebir
                     else
                     {
                         Console.WriteLine($"{Name} {status}");
+                        AnaForm1.Log($"{Name} {status}");
                         Thread.Sleep(1000);
                     }
                 }
@@ -403,12 +431,14 @@ namespace denemebir
                 {
                     if (tableStatus[i] == -1)
                     {
+                        customerQueue.Remove(this);
                         AnaForm1.masalarButton[i].BackColor = Color.Red;
                         tableStatus[i] = this.Id;
                         this.status = customerStatus.Sitting;
                         this.TableNo = i;
                         SetLabelText(AnaForm1.butonLabelleri[i], this.Name);
                         Console.WriteLine("[{0}]", string.Join(", ", tableStatus));
+                        
                         Eat(i);
                         break;
                     }
@@ -418,6 +448,7 @@ namespace denemebir
             public void leave()
             {
                 Console.WriteLine($"{Name} ayrılıyor.");
+                AnaForm1.Log($"{Name} ayrılıyor.");
                 if (!status.Equals(customerStatus.Waiting))
                 {
                     tableStatus[TableNo] = -1;
@@ -442,7 +473,7 @@ namespace denemebir
         public static void StartRandomCustomerGenerator()
         {
             Random random = new Random();
-            int maxCustomerCount = 50; // Belirli bir sayıya ulaşana kadar müşteri üretecek
+            
             int currentCustomerCount = 0;
 
             while (currentCustomerCount < maxCustomerCount)
@@ -453,6 +484,7 @@ namespace denemebir
                 // Yeni müşteri üret
                 Customer newCustomer = GenerateRandomCustomer();
                 customers.Add(newCustomer);
+                customerQueue.Add(newCustomer);
                 newCustomer.StartWorking();
 
                 currentCustomerCount++;
@@ -467,6 +499,7 @@ namespace denemebir
             int randomPriority = random.Next(1, 5); // Rastgele bir öncelik seviyesi üret
             string randomName = "Customer" + totalCustomerCount; // Müşteri adını belirle
             Console.WriteLine($"{randomName} üretildi.");
+            AnaForm1.Log($"{randomName} üretildi.");
             return new Customer(randomId, randomPriority, randomName);
         }
         public static void Main()
@@ -476,30 +509,33 @@ namespace denemebir
                 tableStatus[i] = -1;
             }
 
+            
+            for(int i = 0;i < waiterCount; i++)
+            {
+                Waiter garson = new Waiter(i, "Garson"+i);
+                waiters.Add(garson);
+                Thread garsonThread = new Thread(garson.StartWorking);
+                garsonThread.Start();
+                Thread.Sleep(1000);
+            }
+
+            for (int i = 0; i < chefCount; i++)
+            {
+                Chef sef = new Chef(i, "Aşçı"+i);
+                chefs.Add(sef);
+                Thread sef1Thread = new Thread(sef.StartWorking);
+                sef1Thread.Start();
+                Thread.Sleep(1000);
+            }
+
             Thread customerGenerator = new Thread(StartRandomCustomerGenerator);
             customerGenerator.Start();
 
-            Waiter garson1 = new Waiter(0, "Ali");
-            waiters.Add(garson1);
-            Thread garson1Thread = new Thread(garson1.StartWorking);
-            
-            garson1Thread.Start();
-            Thread.Sleep(1000);
-            Waiter garson2 = new Waiter(1, "Kazım");
-            waiters.Add(garson2);
-            Thread garson2Thread = new Thread(garson2.StartWorking);
-            garson2Thread.Start();
-            Thread.Sleep(1000);
-            Chef sef1 = new Chef(0, "Mehmet");
-            chefs.Add(sef1);
-            Thread sef1Thread = new Thread(sef1.StartWorking);
-            sef1Thread.Start();
-            Thread.Sleep(1000);
-            Chef sef2 = new Chef(1, "Akif");
-            chefs.Add(sef2);
-            Thread sef2Thread = new Thread(sef2.StartWorking);
-            sef2Thread.Start();
 
+
+
+
+            AnaForm1.MasaAnimasyonPaneliEkle();
             AnaForm1.AsciAnimasyonPaneliEkle();
             AnaForm1.GarsonAnimasyonPaneliEkle();
 

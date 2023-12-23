@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using static denemebir.main1;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+
+
 
 namespace denemebir
 {
@@ -61,7 +62,7 @@ namespace denemebir
         {
             //TabPage tabPage = new TabPage("Masalar"); // Yeni bir TabPage oluşturun
 
-            
+
 
             // Paneli TabPage'in tamamına yayın
             //tabPage.Controls.Add(masalarPanel); // Paneli TabPage'e ekle
@@ -97,12 +98,7 @@ namespace denemebir
             masalariBoya();
 
 
-            Button baslaButton = new Button();
-            baslaButton.Text = "BAŞLA";
 
-            baslaButton.Location = new Point(masalarPanel.Size.Width / 2, masalarPanel.Size.Height - 100);
-            baslaButton.Click += BaslaButton_Click;
-            masalarPanel.Controls.Add(baslaButton);
 
             //tab.TabPages.Add(tabPage); // TabPage'i TabControl'e ekle
         }
@@ -117,9 +113,9 @@ namespace denemebir
 
 
 
-            
 
-            for(int i=0;i<waiters.Count;i++)
+
+            for (int i = 0; i < waiters.Count; i++)
             {
 
                 Button chefButon = new Button();
@@ -139,9 +135,6 @@ namespace denemebir
                 asciPanel.Controls.Add(butonEtiketi); // Panel'e Label'i ekle
                 asciPanel.Controls.Add(chefButon); // Panel'e Button'u ekle
                 chefButton.Add(chefButon);
-
-
-                
             }
 
 
@@ -171,7 +164,7 @@ namespace denemebir
                 waiterButon.BackColor = Color.DarkSeaGreen;
                 waiterButon.Text = waiters[i].Name;
                 waiterButon.Width = 300;
-                waiterButon.Height =100;
+                waiterButon.Height = 100;
                 waiterButon.Location = new Point(garsonPanel.Size.Width / 5, i * (garsonPanel.Size.Height / (waiters.Count + 1)));
 
                 Label butonEtiketi = new Label();
@@ -218,9 +211,14 @@ namespace denemebir
             masalarPanel.Size = new Size(400, 1000);
             masalarPanel.BorderStyle = BorderStyle.FixedSingle;
             mainPanel.Controls.Add(masalarPanel);
+            Button baslaButton = new Button();
+            baslaButton.Text = "BAŞLA";
 
-            MasaAnimasyonPaneliEkle();
-            
+            baslaButton.Location = new Point(masalarPanel.Size.Width / 2, masalarPanel.Size.Height - 100);
+            baslaButton.Click += BaslaButton_Click;
+            masalarPanel.Controls.Add(baslaButton);
+
+
 
 
 
@@ -259,7 +257,21 @@ namespace denemebir
             }
 
         }
+        public static void Log(string message)
+        {
+            if (konsol.InvokeRequired)
+            {
+                konsol.Invoke(new Action<string>(Log), message);
+            }
+            else
+            {
+                konsol.AppendText(message + Environment.NewLine);
+            }
+        }
+        private void label1_Click(object sender, EventArgs e)
+        {
 
+        }
     }
 
 
