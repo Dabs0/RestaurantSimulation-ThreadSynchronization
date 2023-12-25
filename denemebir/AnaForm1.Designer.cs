@@ -37,6 +37,10 @@
             konsol = new TextBox();
             label1 = new Label();
             fieldCustomerCount = new NumericUpDown();
+            asciKonsol = new TextBox();
+            garsonKonsol = new TextBox();
+            masalarKonsol = new TextBox();
+            siraKonsol = new TextBox();
             ((System.ComponentModel.ISupportInitialize)fieldWaiterCount).BeginInit();
             ((System.ComponentModel.ISupportInitialize)fieldChefCount).BeginInit();
             ((System.ComponentModel.ISupportInitialize)fieldTableCount).BeginInit();
@@ -46,7 +50,7 @@
             // lblWaiterCount
             // 
             lblWaiterCount.AutoSize = true;
-            lblWaiterCount.Location = new Point(1496, 76);
+            lblWaiterCount.Location = new Point(1600, 67);
             lblWaiterCount.Name = "lblWaiterCount";
             lblWaiterCount.Size = new Size(76, 15);
             lblWaiterCount.TabIndex = 0;
@@ -54,7 +58,7 @@
             // 
             // fieldWaiterCount
             // 
-            fieldWaiterCount.Location = new Point(1496, 94);
+            fieldWaiterCount.Location = new Point(1600, 85);
             fieldWaiterCount.Name = "fieldWaiterCount";
             fieldWaiterCount.Size = new Size(38, 23);
             fieldWaiterCount.TabIndex = 1;
@@ -62,7 +66,7 @@
             // 
             // fieldChefCount
             // 
-            fieldChefCount.Location = new Point(1496, 150);
+            fieldChefCount.Location = new Point(1600, 141);
             fieldChefCount.Name = "fieldChefCount";
             fieldChefCount.Size = new Size(38, 23);
             fieldChefCount.TabIndex = 2;
@@ -71,7 +75,7 @@
             // lblChefCount
             // 
             lblChefCount.AutoSize = true;
-            lblChefCount.Location = new Point(1496, 132);
+            lblChefCount.Location = new Point(1600, 123);
             lblChefCount.Name = "lblChefCount";
             lblChefCount.Size = new Size(61, 15);
             lblChefCount.TabIndex = 3;
@@ -81,7 +85,7 @@
             // lblTableCount
             // 
             lblTableCount.AutoSize = true;
-            lblTableCount.Location = new Point(1496, 187);
+            lblTableCount.Location = new Point(1600, 178);
             lblTableCount.Name = "lblTableCount";
             lblTableCount.Size = new Size(67, 15);
             lblTableCount.TabIndex = 4;
@@ -89,7 +93,7 @@
             // 
             // fieldTableCount
             // 
-            fieldTableCount.Location = new Point(1496, 214);
+            fieldTableCount.Location = new Point(1600, 205);
             fieldTableCount.Name = "fieldTableCount";
             fieldTableCount.Size = new Size(38, 23);
             fieldTableCount.TabIndex = 5;
@@ -97,16 +101,17 @@
             // 
             // konsol
             // 
-            konsol.Location = new Point(1496, 281);
+            konsol.Location = new Point(1600, 281);
             konsol.Multiline = true;
             konsol.Name = "konsol";
-            konsol.Size = new Size(376, 668);
+            konsol.ScrollBars = ScrollBars.Vertical;
+            konsol.Size = new Size(284, 513);
             konsol.TabIndex = 6;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(1622, 76);
+            label1.Location = new Point(1726, 67);
             label1.Name = "label1";
             label1.Size = new Size(79, 15);
             label1.TabIndex = 7;
@@ -114,17 +119,57 @@
             // 
             // fieldCustomerCount
             // 
-            fieldCustomerCount.Location = new Point(1622, 94);
+            fieldCustomerCount.Location = new Point(1726, 85);
             fieldCustomerCount.Name = "fieldCustomerCount";
             fieldCustomerCount.Size = new Size(38, 23);
             fieldCustomerCount.TabIndex = 8;
             fieldCustomerCount.Value = new decimal(new int[] { 50, 0, 0, 0 });
+            // 
+            // asciKonsol
+            // 
+            asciKonsol.Location = new Point(0, 800);
+            asciKonsol.Multiline = true;
+            asciKonsol.Name = "asciKonsol";
+            asciKonsol.ScrollBars = ScrollBars.Vertical;
+            asciKonsol.Size = new Size(400, 160);
+            asciKonsol.TabIndex = 9;
+            // 
+            // garsonKonsol
+            // 
+            garsonKonsol.Location = new Point(400, 800);
+            garsonKonsol.Multiline = true;
+            garsonKonsol.Name = "garsonKonsol";
+            garsonKonsol.ScrollBars = ScrollBars.Vertical;
+            garsonKonsol.Size = new Size(400, 160);
+            garsonKonsol.TabIndex = 10;
+            // 
+            // masalarKonsol
+            // 
+            masalarKonsol.Location = new Point(800, 800);
+            masalarKonsol.Multiline = true;
+            masalarKonsol.Name = "masalarKonsol";
+            masalarKonsol.ScrollBars = ScrollBars.Vertical;
+            masalarKonsol.Size = new Size(400, 160);
+            masalarKonsol.TabIndex = 11;
+            // 
+            // siraKonsol
+            // 
+            siraKonsol.Location = new Point(1200, 800);
+            siraKonsol.Multiline = true;
+            siraKonsol.Name = "siraKonsol";
+            siraKonsol.ScrollBars = ScrollBars.Vertical;
+            siraKonsol.Size = new Size(400, 160);
+            siraKonsol.TabIndex = 12;
             // 
             // AnaForm1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1884, 961);
+            Controls.Add(siraKonsol);
+            Controls.Add(masalarKonsol);
+            Controls.Add(garsonKonsol);
+            Controls.Add(asciKonsol);
             Controls.Add(fieldCustomerCount);
             Controls.Add(label1);
             Controls.Add(konsol);
@@ -151,6 +196,10 @@
         private Label lblChefCount;
         private Label lblTableCount;
         private Label label1;
+        public static TextBox asciKonsol;
+        public static TextBox garsonKonsol;
+        public static TextBox masalarKonsol;
+        public static TextBox siraKonsol;
         public static NumericUpDown fieldCustomerCount;
         public static NumericUpDown fieldTableCount;
         public static NumericUpDown fieldWaiterCount;
