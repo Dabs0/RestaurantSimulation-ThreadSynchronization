@@ -20,6 +20,8 @@ namespace denemebir
         static Button baslaButton = new Button();
         public static List<Masa> masalar = new List<Masa>();
         public static List<Button> masalarButton = new List<Button>();
+        public static List<Button> siraButton = new List<Button>();
+        
         Random rand = new Random();
         public static List<Label> butonLabelleri = new List<Label>();
         public static List<Button> chefButton = new List<Button>();
@@ -222,6 +224,7 @@ namespace denemebir
             siraPanel.Location = new Point(1200, 0);
             siraPanel.Size = new Size(400, 800);
             siraPanel.BorderStyle = BorderStyle.FixedSingle;
+            
             mainPanel.Controls.Add(siraPanel);
 
 
@@ -312,6 +315,44 @@ namespace denemebir
             else
             {
                 garsonKonsol.AppendText(message + Environment.NewLine);
+            }
+        }
+        public static void LogQueue(string message)
+        {
+            if (siraKonsol.InvokeRequired)
+            {
+                siraKonsol.Invoke(new Action<string>(LogQueue), message);
+            }
+            else
+            {
+                siraKonsol.AppendText(message + Environment.NewLine);
+            }
+        }
+        public static void updateQueue()
+        {
+            if (siraPanel.InvokeRequired)
+            {
+                siraPanel.Invoke(new MethodInvoker(updateQueue));
+                return;
+            }
+
+            siraPanel.Controls.Clear();
+            siraButton.Clear();
+            int i = 0;
+            
+            foreach (var element in customerQueue)
+            {
+                Button queueButton = new Button();
+                queueButton.Name = element.Name;
+                queueButton.BackColor = Color.Wheat;
+                queueButton.Text = element.Name + " Öncelik: " + element.Priority;
+                queueButton.Width = 300;
+                queueButton.Height = 100;
+                queueButton.Location = new Point(siraPanel.Size.Width / 5, i * (siraPanel.Size.Height / (customerQueue.Count + 1)));
+                siraPanel.Controls.Add(queueButton);
+                siraButton.Add(queueButton);
+                
+                i++;
             }
         }
         private void label1_Click(object sender, EventArgs e)

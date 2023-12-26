@@ -81,7 +81,8 @@ namespace denemebir
                 {
                     Console.WriteLine($"{Musteri.Name} masadan ayrıldı.");
                     AnaForm1.Log($"{Musteri.Name} masadan ayrıldı.");
-                    AnaForm1.LogCustomer($"{Musteri.Name} masadan ayrıldı.");
+                    AnaForm1.LogQueue($"{Musteri.Name} masadan ayrıldı.");
+                    
                     Musteri = null;
                     masa.BosMu = true;
                 }
@@ -400,25 +401,30 @@ namespace denemebir
             private void FindTableLoop()
             {
                 int tryCount = 0;
-                while (!shouldStop && customerQueue.ElementAt(0).Equals(this))
+                AnaForm1.LogQueue("findtableloop:" + this.Name);
+                while (!shouldStop )
                 {
                     
+                    
                         Console.WriteLine($"{Name} masa arıyor");
-                    AnaForm1.Log($"{Name} masa arıyor");
-                    AnaForm1.LogCustomer($"{Name} masa arıyor");
+                        AnaForm1.Log($"{Name} masa arıyor");
+                        AnaForm1.LogCustomer($"{Name} masa arıyor");
 
-                    if (tryCount == 5)
+                        if (tryCount == 5)
                         {
                             customerQueue.Remove(this);
+                            AnaForm1.updateQueue();
                             Console.WriteLine($"{this.Name} boş masa bulamadı. Ayrılıyor.");
-                        AnaForm1.Log($"{this.Name} boş masa bulamadı. Ayrılıyor.");
-                        AnaForm1.LogCustomer($"{this.Name} boş masa bulamadı. Ayrılıyor.");
-                        leave();
+                            AnaForm1.Log($"{this.Name} boş masa bulamadı. Ayrılıyor.");
+                            AnaForm1.LogQueue($"{this.Name} boş masa bulamadı. Ayrılıyor.");
+                            leave();
                             break;
                         }
                         findTable();
                         tryCount++;
-                        Thread.Sleep(3000);
+                        Thread.Sleep(1000);
+                    
+                        
                     
                     
                 }
@@ -474,14 +480,15 @@ namespace denemebir
                 {
                     if (tableStatus[i] == -1)
                     {
-                        customerQueue.Remove(this);
+                        
                         AnaForm1.masalarButton[i].BackColor = Color.Red;
                         tableStatus[i] = this.Id;
                         this.status = customerStatus.Sitting;
                         this.TableNo = i;
                         SetLabelText(AnaForm1.butonLabelleri[i], this.Name +" "+ this.status);
                         Console.WriteLine("[{0}]", string.Join(", ", tableStatus));
-                        
+                        customerQueue.Remove(this);
+                        AnaForm1.updateQueue();
                         Eat(i);
                         break;
                     }
@@ -492,7 +499,7 @@ namespace denemebir
             {
                 Console.WriteLine($"{Name} ayrılıyor.");
                 AnaForm1.Log($"{Name} ayrılıyor.");
-                AnaForm1.LogCustomer($"{Name} ayrılıyor.");
+                AnaForm1.LogQueue($"{Name} ayrılıyor.");
                 if (!status.Equals(customerStatus.Waiting))
                 {
                     tableStatus[TableNo] = -1;
@@ -522,13 +529,14 @@ namespace denemebir
 
             while (currentCustomerCount < maxCustomerCount)
             {
-                int randomInterval = random.Next(1000, 5000); // Rastgele bir süre aralığı (örneğin, 1 saniye ile 5 saniye arasında)
+                int randomInterval = random.Next(1000, 2000); // Rastgele bir süre aralığı (örneğin, 1 saniye ile 5 saniye arasında)
                 Thread.Sleep(randomInterval);
 
                 // Yeni müşteri üret
                 Customer newCustomer = GenerateRandomCustomer();
                 customers.Add(newCustomer);
                 customerQueue.Add(newCustomer);
+                AnaForm1.updateQueue();
                 newCustomer.StartWorking();
 
                 currentCustomerCount++;
@@ -544,7 +552,7 @@ namespace denemebir
             string randomName = "Customer" + totalCustomerCount; // Müşteri adını belirle
             Console.WriteLine($"{randomName} üretildi.");
             AnaForm1.Log($"{randomName} üretildi.");
-            AnaForm1.LogCustomer($"{randomName} üretildi.");
+            AnaForm1.LogQueue($"{randomName} üretildi.");
             return new Customer(randomId, randomPriority, randomName);
         }
         public static void Main()
@@ -561,7 +569,7 @@ namespace denemebir
                 waiters.Add(garson);
                 Thread garsonThread = new Thread(garson.StartWorking);
                 garsonThread.Start();
-                Thread.Sleep(1000);
+                
             }
 
             for (int i = 0; i < chefCount; i++)
@@ -570,7 +578,7 @@ namespace denemebir
                 chefs.Add(sef);
                 Thread sef1Thread = new Thread(sef.StartWorking);
                 sef1Thread.Start();
-                Thread.Sleep(1000);
+                
             }
 
             Thread customerGenerator = new Thread(StartRandomCustomerGenerator);
