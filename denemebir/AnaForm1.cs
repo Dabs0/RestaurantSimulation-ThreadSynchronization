@@ -21,7 +21,7 @@ namespace denemebir
         public static List<Masa> masalar = new List<Masa>();
         public static List<Button> masalarButton = new List<Button>();
         public static List<Button> siraButton = new List<Button>();
-        
+
         Random rand = new Random();
         public static List<Label> butonLabelleri = new List<Label>();
         public static List<Button> chefButton = new List<Button>();
@@ -34,6 +34,10 @@ namespace denemebir
         static Panel masalarPanel;
         static Panel siraPanel;
         static Panel mainPanel;
+
+        public static int customerEarned = 0;
+        public static int totalIncome = 0;
+        public static int customerLeftQueue = 0;
         public AnaForm1()
         {
             InitializeComponent();
@@ -214,17 +218,17 @@ namespace denemebir
             masalarPanel.Size = new Size(400, 800);
             masalarPanel.BorderStyle = BorderStyle.FixedSingle;
             mainPanel.Controls.Add(masalarPanel);
-            
+
             baslaButton.Text = "BAŞLA";
 
-            baslaButton.Location = new Point(1720, 190);
+            baslaButton.Location = new Point(1720, 220);
             baslaButton.Click += BaslaButton_Click;
             mainPanel.Controls.Add(baslaButton);
             siraPanel = new Panel();
             siraPanel.Location = new Point(1200, 0);
             siraPanel.Size = new Size(400, 800);
             siraPanel.BorderStyle = BorderStyle.FixedSingle;
-            
+
             mainPanel.Controls.Add(siraPanel);
 
 
@@ -288,7 +292,7 @@ namespace denemebir
         {
             if (masalarKonsol.InvokeRequired)
             {
-                 masalarKonsol.Invoke(new Action<string>(LogCustomer), message);
+                masalarKonsol.Invoke(new Action<string>(LogCustomer), message);
             }
             else
             {
@@ -339,22 +343,70 @@ namespace denemebir
             siraPanel.Controls.Clear();
             siraButton.Clear();
             int i = 0;
-            
+
             foreach (var element in customerQueue)
             {
+                LogQueue("customerqueuecount:" + customerQueue.Count);
                 Button queueButton = new Button();
                 queueButton.Name = element.Name;
                 queueButton.BackColor = Color.Wheat;
-                queueButton.Text = element.Name + " Öncelik: " + element.Priority;
+                if (element.Priority == 1)
+                {
+                    queueButton.Text = element.Name + " (65 Yaş Öncelikli)" ;
+                }
+                else
+                {
+                    queueButton.Text = element.Name + " (Normal)";
+                }
+                
                 queueButton.Width = 300;
                 queueButton.Height = 100;
                 queueButton.Location = new Point(siraPanel.Size.Width / 5, i * (siraPanel.Size.Height / (customerQueue.Count + 1)));
                 siraPanel.Controls.Add(queueButton);
                 siraButton.Add(queueButton);
-                
+
                 i++;
             }
         }
+        public static void updateLabels()
+        {
+            if (lblCustomerEarn.InvokeRequired)
+            {
+                lblCustomerEarn.Invoke(new MethodInvoker(() => updateLabels()));
+            }
+            else
+            {
+                lblCustomerEarn.Text = "Kazanılan Müşteri: " + customerEarned;
+            }
+
+            if (lblCustomerLeftQueue.InvokeRequired)
+            {
+                lblCustomerLeftQueue.Invoke(new MethodInvoker(() => updateLabels()));
+            }
+            else
+            {
+                lblCustomerLeftQueue.Text = "Kaybedilen Müşteri: " + customerLeftQueue;
+            }
+
+            if (lblTotalIncome.InvokeRequired)
+            {
+                lblTotalIncome.Invoke(new MethodInvoker(() => updateLabels()));
+            }
+            else
+            {
+                lblTotalIncome.Text = "Toplam Kazanç: " + totalIncome;
+            }
+
+            if (lblTotalCustomer.InvokeRequired)
+            {
+                lblTotalCustomer.Invoke(new MethodInvoker(() => updateLabels()));
+            }
+            else
+            {
+                lblTotalCustomer.Text = "Gelen Müşteri: " + main1.currentCustomerCount;
+            }
+        }
+
         private void label1_Click(object sender, EventArgs e)
         {
 

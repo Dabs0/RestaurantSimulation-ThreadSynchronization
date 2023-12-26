@@ -15,6 +15,7 @@ namespace denemebir
         public static int waiterCount = (int)AnaForm1.fieldWaiterCount.Value;
         public static int chefCount = (int)AnaForm1.fieldChefCount.Value;
         private static int totalCustomerCount = 0;
+        public static int currentCustomerCount = 0;
         public static int maxCustomerCount = (int)AnaForm1.fieldCustomerCount.Value; // Belirli bir sayıya ulaşana kadar müşteri üretecek
         static int[] tableStatus = new int[tableCount];//boşken -1 değilken müşterinin id'si
         static List<Customer> customers = new List<Customer>();
@@ -356,6 +357,9 @@ namespace denemebir
                 Console.WriteLine($"Aşçı {Name} , {tableID}. Masanın siparişini pişirdi...");
                 AnaForm1.Log($"Aşçı {Name} , {tableID}. Masanın siparişini pişirdi...");
                 AnaForm1.LogChef($"Aşçı {Name} , {tableID}. Masanın siparişini pişirdi...");
+                AnaForm1.totalIncome++;
+                AnaForm1.customerEarned++;
+                AnaForm1.updateLabels();
                 asciyiMesguldenCikar(p, tableID);
             }
             public void cookOrder(int OrderId, int OrderId2)
@@ -410,13 +414,14 @@ namespace denemebir
                         AnaForm1.Log($"{Name} masa arıyor");
                         AnaForm1.LogCustomer($"{Name} masa arıyor");
 
-                        if (tryCount == 5)
+                        if (tryCount == 50)
                         {
                             customerQueue.Remove(this);
                             AnaForm1.updateQueue();
                             Console.WriteLine($"{this.Name} boş masa bulamadı. Ayrılıyor.");
                             AnaForm1.Log($"{this.Name} boş masa bulamadı. Ayrılıyor.");
                             AnaForm1.LogQueue($"{this.Name} boş masa bulamadı. Ayrılıyor.");
+                            AnaForm1.customerLeftQueue++;
                             leave();
                             break;
                         }
@@ -524,22 +529,25 @@ namespace denemebir
         public static void StartRandomCustomerGenerator()
         {
             Random random = new Random();
-            
-            int currentCustomerCount = 0;
 
             while (currentCustomerCount < maxCustomerCount)
             {
-                int randomInterval = random.Next(1000, 2000); // Rastgele bir süre aralığı (örneğin, 1 saniye ile 5 saniye arasında)
+                int randomInterval = random.Next(1000, 2000);
                 Thread.Sleep(randomInterval);
 
-                // Yeni müşteri üret
                 Customer newCustomer = GenerateRandomCustomer();
-                customers.Add(newCustomer);
-                customerQueue.Add(newCustomer);
-                AnaForm1.updateQueue();
-                newCustomer.StartWorking();
 
+                lock (customerQueue)
+                {
+                    customers.Add(newCustomer);
+                    customerQueue.Add(newCustomer);
+                    AnaForm1.LogQueue("yeni eklendi:" + customerQueue.Count);
+                    AnaForm1.updateQueue();
+                }
+
+                newCustomer.StartWorking();
                 currentCustomerCount++;
+                AnaForm1.updateLabels();
                 totalCustomerCount++;
             }
         }
@@ -548,7 +556,7 @@ namespace denemebir
         {
             Random random = new Random();
             int randomId = totalCustomerCount; // ID'yi toplam müşteri sayısına göre artır
-            int randomPriority = random.Next(1, 5); // Rastgele bir öncelik seviyesi üret
+            int randomPriority = random.Next(0, 1); // Rastgele bir öncelik seviyesi üret
             string randomName = "Customer" + totalCustomerCount; // Müşteri adını belirle
             Console.WriteLine($"{randomName} üretildi.");
             AnaForm1.Log($"{randomName} üretildi.");
@@ -583,7 +591,7 @@ namespace denemebir
 
             Thread customerGenerator = new Thread(StartRandomCustomerGenerator);
             customerGenerator.Start();
-
+            AnaForm1.totalIncome = 0 - tableCount - waiterCount - chefCount;
 
 
 

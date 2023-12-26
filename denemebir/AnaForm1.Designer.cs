@@ -41,6 +41,10 @@
             garsonKonsol = new TextBox();
             masalarKonsol = new TextBox();
             siraKonsol = new TextBox();
+            lblTotalCustomer = new Label();
+            lblCustomerEarn = new Label();
+            lblCustomerLeftQueue = new Label();
+            lblTotalIncome = new Label();
             ((System.ComponentModel.ISupportInitialize)fieldWaiterCount).BeginInit();
             ((System.ComponentModel.ISupportInitialize)fieldChefCount).BeginInit();
             ((System.ComponentModel.ISupportInitialize)fieldTableCount).BeginInit();
@@ -161,11 +165,51 @@
             siraKonsol.Size = new Size(400, 160);
             siraKonsol.TabIndex = 12;
             // 
+            // lblTotalCustomer
+            // 
+            lblTotalCustomer.AutoSize = true;
+            lblTotalCustomer.Location = new Point(1726, 123);
+            lblTotalCustomer.Name = "lblTotalCustomer";
+            lblTotalCustomer.Size = new Size(92, 15);
+            lblTotalCustomer.TabIndex = 13;
+            lblTotalCustomer.Text = "Gelen Müşteri: 0";
+            // 
+            // lblCustomerEarn
+            // 
+            lblCustomerEarn.AutoSize = true;
+            lblCustomerEarn.Location = new Point(1726, 143);
+            lblCustomerEarn.Name = "lblCustomerEarn";
+            lblCustomerEarn.Size = new Size(112, 15);
+            lblCustomerEarn.TabIndex = 14;
+            lblCustomerEarn.Text = "Kazanılan Müşteri: 0";
+            // 
+            // lblCustomerLeftQueue
+            // 
+            lblCustomerLeftQueue.AutoSize = true;
+            lblCustomerLeftQueue.Location = new Point(1726, 168);
+            lblCustomerLeftQueue.Name = "lblCustomerLeftQueue";
+            lblCustomerLeftQueue.Size = new Size(119, 15);
+            lblCustomerLeftQueue.TabIndex = 15;
+            lblCustomerLeftQueue.Text = "Giremeyen Müşteri: 0";
+            // 
+            // lblTotalIncome
+            // 
+            lblTotalIncome.AutoSize = true;
+            lblTotalIncome.Location = new Point(1726, 192);
+            lblTotalIncome.Name = "lblTotalIncome";
+            lblTotalIncome.Size = new Size(98, 15);
+            lblTotalIncome.TabIndex = 16;
+            lblTotalIncome.Text = "Toplam Kazanç: 0";
+            // 
             // AnaForm1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1884, 961);
+            Controls.Add(lblTotalIncome);
+            Controls.Add(lblCustomerLeftQueue);
+            Controls.Add(lblCustomerEarn);
+            Controls.Add(lblTotalCustomer);
             Controls.Add(siraKonsol);
             Controls.Add(masalarKonsol);
             Controls.Add(garsonKonsol);
@@ -196,14 +240,18 @@
         private Label lblChefCount;
         private Label lblTableCount;
         private Label label1;
+        public static Label lblTotalCustomer;
         public static TextBox asciKonsol;
         public static TextBox garsonKonsol;
         public static TextBox masalarKonsol;
         public static TextBox siraKonsol;
         public static NumericUpDown fieldCustomerCount;
-        public static NumericUpDown fieldTableCount;
+        public static  NumericUpDown fieldTableCount;
         public static NumericUpDown fieldWaiterCount;
         public static NumericUpDown fieldChefCount;
         public static TextBox konsol;
+        public static Label lblCustomerEarn;
+        public static Label lblCustomerLeftQueue;
+        public static Label lblTotalIncome;
     }
 }
