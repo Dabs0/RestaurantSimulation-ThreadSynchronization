@@ -138,7 +138,7 @@ namespace denemebir
 
                 Button p = AnaForm1.garsonButton.FirstOrDefault(c => c.Name == this.Name);
                 garsonuMesgulYap(p, tableID);
-                Thread.Sleep(5000);
+                Thread.Sleep(2000);
                 customers.FirstOrDefault(c => c.Id == tableStatus[tableID]).status = customerStatus.Ordered;
                 Console.WriteLine($"Garson {Name} , {tableID}. Masadan sipariş aldı...");
                 AnaForm1.Log($"Garson {Name} , {tableID}. Masadan sipariş aldı...");
@@ -352,7 +352,7 @@ namespace denemebir
 
                 Button p = AnaForm1.chefButton.FirstOrDefault(c => c.Name == this.Name);
                 asciyiMesgulYap(p,tableID);
-                Thread.Sleep(5000);
+                Thread.Sleep(3000);
                 customers.FirstOrDefault(c => c.Id == tableStatus[tableID]).status = customerStatus.Eating;
                 Console.WriteLine($"Aşçı {Name} , {tableID}. Masanın siparişini pişirdi...");
                 AnaForm1.Log($"Aşçı {Name} , {tableID}. Masanın siparişini pişirdi...");
@@ -414,7 +414,7 @@ namespace denemebir
                         AnaForm1.Log($"{Name} masa arıyor");
                         AnaForm1.LogCustomer($"{Name} masa arıyor");
 
-                        if (tryCount == 50)
+                        if (tryCount == 20)
                         {
                             customerQueue.Remove(this);
                             AnaForm1.updateQueue();
@@ -444,7 +444,7 @@ namespace denemebir
                         AnaForm1.Log($"{Name} {status}");
                         AnaForm1.LogCustomer($"{Name} {status}");
                         SetLabelText(AnaForm1.butonLabelleri[this.TableNo], this.Name +" "+ this.status);
-                        Thread.Sleep(1000);
+                        Thread.Sleep(3000);
                         status = customerStatus.Ate;
                         AnaForm1.masalarButton[masaId].BackColor = Color.Wheat;
                         SetLabelText(AnaForm1.butonLabelleri[masaId], "BOŞ");
@@ -556,7 +556,7 @@ namespace denemebir
         {
             Random random = new Random();
             int randomId = totalCustomerCount; // ID'yi toplam müşteri sayısına göre artır
-            int randomPriority = random.Next(0, 1); // Rastgele bir öncelik seviyesi üret
+            int randomPriority = random.Next(0, 100); // Rastgele bir öncelik seviyesi üret
             string randomName = "Customer" + totalCustomerCount; // Müşteri adını belirle
             Console.WriteLine($"{randomName} üretildi.");
             AnaForm1.Log($"{randomName} üretildi.");

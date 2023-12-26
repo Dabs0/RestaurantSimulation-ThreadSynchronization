@@ -346,19 +346,12 @@ namespace denemebir
 
             foreach (var element in customerQueue)
             {
-                LogQueue("customerqueuecount:" + customerQueue.Count);
+                LogQueue("customerqueuecount:"+customerQueue.Count);
                 Button queueButton = new Button();
                 queueButton.Name = element.Name;
                 queueButton.BackColor = Color.Wheat;
-                if (element.Priority == 1)
-                {
-                    queueButton.Text = element.Name + " (65 Yaş Öncelikli)" ;
-                }
-                else
-                {
-                    queueButton.Text = element.Name + " (Normal)";
-                }
-                
+                queueButton.Text = element.Name + " Öncelik:"+element.Priority;
+
                 queueButton.Width = 300;
                 queueButton.Height = 100;
                 queueButton.Location = new Point(siraPanel.Size.Width / 5, i * (siraPanel.Size.Height / (customerQueue.Count + 1)));
