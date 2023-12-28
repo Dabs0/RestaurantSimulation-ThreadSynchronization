@@ -21,6 +21,16 @@ namespace denemebir
         static List<Customer> customers = new List<Customer>();
         public static List<Chef> chefs = new List<Chef>();
         public static List<Waiter> waiters = new List<Waiter>();
+        public static int asciZamanKatsayisi = 3000;
+        public static int garsonZamanKatsayisi = 2000;
+        public static int musteriYemekZamanKatsayisi = 3000;
+        public static int musteriUretmeZamanKatsayisi = 1000;
+        public static int donguZamanKatsayisi = 1000;
+        public static int simulasyonHiziZamanKatsayisi = 1;
+        public static int siraBeklemeZamanKatsayisi = 20;
+        public static int kasaZamanKatsayisi = 1000;
+
+
 
         public enum customerStatus
         {
@@ -66,7 +76,7 @@ namespace denemebir
 
                     int p = masa.id;
                     AnaForm1.masalarButton[p].BackColor = Color.Red;
-                    Thread.Sleep(1000);
+                    Thread.Sleep(donguZamanKatsayisi*simulasyonHiziZamanKatsayisi);
                 }
                 else
                 {
@@ -138,7 +148,7 @@ namespace denemebir
 
                 Button p = AnaForm1.garsonButton.FirstOrDefault(c => c.Name == this.Name);
                 garsonuMesgulYap(p, tableID);
-                Thread.Sleep(2000);
+                Thread.Sleep(garsonZamanKatsayisi*simulasyonHiziZamanKatsayisi);
                 customers.FirstOrDefault(c => c.Id == tableStatus[tableID]).status = customerStatus.Ordered;
                 Console.WriteLine($"Garson {Name} , {tableID}. Masadan sipariş aldı...");
                 AnaForm1.Log($"Garson {Name} , {tableID}. Masadan sipariş aldı...");
@@ -164,7 +174,7 @@ namespace denemebir
                 while (!shouldStop)
                 {
                     seekOrder();
-                    Thread.Sleep(1000);
+                    Thread.Sleep(donguZamanKatsayisi*simulasyonHiziZamanKatsayisi);
                 }
             }
             public void garsonuMesgulYap(Button p, int tableId)
@@ -261,7 +271,7 @@ namespace denemebir
                 while (!shouldStop)
                 {
                     seekOrder();
-                    Thread.Sleep(1000);
+                    Thread.Sleep(donguZamanKatsayisi * simulasyonHiziZamanKatsayisi);
                 }
             }
             public void seekOrder()
@@ -352,7 +362,7 @@ namespace denemebir
 
                 Button p = AnaForm1.chefButton.FirstOrDefault(c => c.Name == this.Name);
                 asciyiMesgulYap(p,tableID);
-                Thread.Sleep(3000);
+                Thread.Sleep(asciZamanKatsayisi*simulasyonHiziZamanKatsayisi);
                 customers.FirstOrDefault(c => c.Id == tableStatus[tableID]).status = customerStatus.Eating;
                 Console.WriteLine($"Aşçı {Name} , {tableID}. Masanın siparişini pişirdi...");
                 AnaForm1.Log($"Aşçı {Name} , {tableID}. Masanın siparişini pişirdi...");
@@ -410,9 +420,7 @@ namespace denemebir
                 {
                     
                     
-                        Console.WriteLine($"{Name} masa arıyor");
-                        AnaForm1.Log($"{Name} masa arıyor");
-                        AnaForm1.LogCustomer($"{Name} masa arıyor");
+                       
 
                         if (tryCount == 20)
                         {
@@ -427,7 +435,7 @@ namespace denemebir
                         }
                         findTable();
                         tryCount++;
-                        Thread.Sleep(1000);
+                        Thread.Sleep(donguZamanKatsayisi * simulasyonHiziZamanKatsayisi);
                     
                         
                     
@@ -444,7 +452,7 @@ namespace denemebir
                         AnaForm1.Log($"{Name} {status}");
                         AnaForm1.LogCustomer($"{Name} {status}");
                         SetLabelText(AnaForm1.butonLabelleri[this.TableNo], this.Name +" "+ this.status);
-                        Thread.Sleep(3000);
+                        Thread.Sleep(musteriYemekZamanKatsayisi*simulasyonHiziZamanKatsayisi);
                         status = customerStatus.Ate;
                         AnaForm1.masalarButton[masaId].BackColor = Color.Wheat;
                         SetLabelText(AnaForm1.butonLabelleri[masaId], "BOŞ");
@@ -460,7 +468,7 @@ namespace denemebir
                         AnaForm1.LogCustomer($"{Name} {status}");
                         SetLabelText(AnaForm1.butonLabelleri[masaId], this.Name+" "+this.status);
 
-                        Thread.Sleep(1000);
+                        Thread.Sleep(donguZamanKatsayisi * simulasyonHiziZamanKatsayisi);
                     }
                 }
             }
@@ -481,23 +489,30 @@ namespace denemebir
 
             public void findTable()
             {
-                for (int i = 0; i < tableCount; i++)
+                if (customerQueue.First().Equals(this))
                 {
-                    if (tableStatus[i] == -1)
+                    Console.WriteLine($"{Name} masa arıyor");
+                    AnaForm1.Log($"{Name} masa arıyor");
+                    AnaForm1.LogCustomer($"{Name} masa arıyor");
+                    for (int i = 0; i < tableCount; i++)
                     {
-                        
-                        AnaForm1.masalarButton[i].BackColor = Color.Red;
-                        tableStatus[i] = this.Id;
-                        this.status = customerStatus.Sitting;
-                        this.TableNo = i;
-                        SetLabelText(AnaForm1.butonLabelleri[i], this.Name +" "+ this.status);
-                        Console.WriteLine("[{0}]", string.Join(", ", tableStatus));
-                        customerQueue.Remove(this);
-                        AnaForm1.updateQueue();
-                        Eat(i);
-                        break;
+                        if (tableStatus[i] == -1)
+                        {
+
+                            AnaForm1.masalarButton[i].BackColor = Color.Red;
+                            tableStatus[i] = this.Id;
+                            this.status = customerStatus.Sitting;
+                            this.TableNo = i;
+                            SetLabelText(AnaForm1.butonLabelleri[i], this.Name + " " + this.status);
+                            Console.WriteLine("[{0}]", string.Join(", ", tableStatus));
+                            customerQueue.Remove(this);
+                            AnaForm1.updateQueue();
+                            Eat(i);
+                            break;
+                        }
                     }
                 }
+                
 
             }
             public void leave()
@@ -532,7 +547,7 @@ namespace denemebir
 
             while (currentCustomerCount < maxCustomerCount)
             {
-                int randomInterval = random.Next(1000, 2000);
+                int randomInterval = random.Next(musteriUretmeZamanKatsayisi*simulasyonHiziZamanKatsayisi, 2*musteriUretmeZamanKatsayisi*simulasyonHiziZamanKatsayisi);
                 Thread.Sleep(randomInterval);
 
                 Customer newCustomer = GenerateRandomCustomer();

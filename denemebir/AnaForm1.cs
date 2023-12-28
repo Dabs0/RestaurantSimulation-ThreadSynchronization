@@ -86,13 +86,13 @@ namespace denemebir
             {
                 Button masaButton = new Button();
                 masaButton.Text = "Masa " + masalar[i].id;
-                masaButton.Width = 200;
+                masaButton.Width = 4 * masalarPanel.Width / 5;
                 masaButton.Height = 100;
-                masaButton.Location = new Point(masalarPanel.Size.Width / 3, i * (masalarPanel.Size.Height / (masalar.Count + 1)));
+                masaButton.Location = new Point(masalarPanel.Size.Width / 8, i * (masalarPanel.Size.Height / (masalar.Count + 1)));
 
                 Label butonEtiketi = new Label();
                 butonEtiketi.BackColor = Color.White;
-                butonEtiketi.Size = new System.Drawing.Size(150, 20);
+                butonEtiketi.Size = new System.Drawing.Size(4 * masaButton.Width / 5, 20);
                 butonEtiketi.Location = new System.Drawing.Point(masaButton.Location.X + 25, masaButton.Location.Y + 70);
                 butonLabelleri.Add(butonEtiketi);
                 masalarPanel.Controls.Add(butonEtiketi); // Panel'e Label'i ekle
@@ -129,14 +129,14 @@ namespace denemebir
                 chefButon.Name = chefs[i].Name;
                 chefButon.BackColor = Color.Wheat;
                 chefButon.Text = chefs[i].Name;
-                chefButon.Width = 300;
+                chefButon.Width = 4 * asciPanel.Width / 5;
                 chefButon.Height = 100;
-                chefButon.Location = new Point(asciPanel.Size.Width / 5, i * (asciPanel.Size.Height / (chefs.Count + 1)));
+                chefButon.Location = new Point(asciPanel.Size.Width / 8, i * (asciPanel.Size.Height / (chefs.Count + 1)));
 
                 Label butonEtiketi = new Label();
                 butonEtiketi.Name = chefs[i].Name;
                 butonEtiketi.BackColor = Color.White;
-                butonEtiketi.Size = new System.Drawing.Size(250, 20);
+                butonEtiketi.Size = new System.Drawing.Size(4 * chefButon.Width / 5, 20);
                 butonEtiketi.Location = new System.Drawing.Point(chefButon.Location.X + 25, chefButon.Location.Y + 70);
                 asciButonLabel.Add(butonEtiketi);
                 asciPanel.Controls.Add(butonEtiketi); // Panel'e Label'i ekle
@@ -170,14 +170,14 @@ namespace denemebir
                 waiterButon.Name = waiters[i].Name;
                 waiterButon.BackColor = Color.Wheat;
                 waiterButon.Text = waiters[i].Name;
-                waiterButon.Width = 300;
+                waiterButon.Width = 4 * garsonPanel.Width / 5;
                 waiterButon.Height = 100;
-                waiterButon.Location = new Point(garsonPanel.Size.Width / 5, i * (garsonPanel.Size.Height / (waiters.Count + 1)));
+                waiterButon.Location = new Point(garsonPanel.Size.Width / 8, i * (garsonPanel.Size.Height / (waiters.Count + 1)));
 
                 Label butonEtiketi = new Label();
                 butonEtiketi.Name = waiters[i].Name;
                 butonEtiketi.BackColor = Color.White;
-                butonEtiketi.Size = new System.Drawing.Size(250, 20);
+                butonEtiketi.Size = new System.Drawing.Size(4 * waiterButon.Width / 5, 20);
                 butonEtiketi.Location = new System.Drawing.Point(waiterButon.Location.X + 25, waiterButon.Location.Y + 70);
                 garsonButonLabel.Add(butonEtiketi);
                 garsonPanel.Controls.Add(butonEtiketi); // Panel'e Label'i ekle
@@ -205,17 +205,17 @@ namespace denemebir
             this.Controls.Add(mainPanel);
             asciPanel = new Panel();
             asciPanel.Location = new Point(0, 0);
-            asciPanel.Size = new Size(400, 800);
+            asciPanel.Size = new Size(320, 800);
             asciPanel.BorderStyle = BorderStyle.FixedSingle;
             mainPanel.Controls.Add(asciPanel);
             garsonPanel = new Panel();
-            garsonPanel.Location = new Point(400, 0);
-            garsonPanel.Size = new Size(400, 800);
+            garsonPanel.Location = new Point(320, 0);
+            garsonPanel.Size = new Size(320, 800);
             garsonPanel.BorderStyle = BorderStyle.FixedSingle;
             mainPanel.Controls.Add(garsonPanel);
             masalarPanel = new Panel();
-            masalarPanel.Location = new Point(800, 0);
-            masalarPanel.Size = new Size(400, 800);
+            masalarPanel.Location = new Point(960, 0);
+            masalarPanel.Size = new Size(320, 800);
             masalarPanel.BorderStyle = BorderStyle.FixedSingle;
             mainPanel.Controls.Add(masalarPanel);
 
@@ -225,8 +225,8 @@ namespace denemebir
             baslaButton.Click += BaslaButton_Click;
             mainPanel.Controls.Add(baslaButton);
             siraPanel = new Panel();
-            siraPanel.Location = new Point(1200, 0);
-            siraPanel.Size = new Size(400, 800);
+            siraPanel.Location = new Point(1280, 0);
+            siraPanel.Size = new Size(320, 800);
             siraPanel.BorderStyle = BorderStyle.FixedSingle;
 
             mainPanel.Controls.Add(siraPanel);
@@ -246,6 +246,22 @@ namespace denemebir
             fieldCustomerCount.Enabled = false;
             fieldTableCount.Enabled = false;
             fieldWaiterCount.Enabled = false;
+            asciZamanNum.Enabled = false;
+            garsonZamanNum.Enabled = false;
+            masaZamanNum.Enabled = false;
+            kasaZamanNum.Enabled = false;
+            siraZamanNum.Enabled = false;
+            donguZamanNum.Enabled = false;
+            simulasyonZamanNum.Enabled = false;
+            musteriUretmeNum.Enabled = false;
+            asciZamanKatsayisi = (int)(asciZamanNum.Value * 1000);
+            garsonZamanKatsayisi = (int)(garsonZamanNum.Value * 1000);
+            musteriYemekZamanKatsayisi = (int)(masaZamanNum.Value * 1000);
+            kasaZamanKatsayisi = (int)(kasaZamanNum.Value * 1000);
+            siraBeklemeZamanKatsayisi = (int)(siraZamanNum.Value);
+            donguZamanKatsayisi = (int)(donguZamanNum.Value * 1000);
+            simulasyonHiziZamanKatsayisi = (int)(simulasyonZamanNum.Value);
+            musteriUretmeZamanKatsayisi = (int)(musteriUretmeNum.Value * 1000);
             main1 main = new main1();
             main1.Main();
 
@@ -346,15 +362,15 @@ namespace denemebir
 
             foreach (var element in customerQueue)
             {
-                LogQueue("customerqueuecount:"+customerQueue.Count);
+                LogQueue("customerqueuecount:" + customerQueue.Count);
                 Button queueButton = new Button();
                 queueButton.Name = element.Name;
                 queueButton.BackColor = Color.Wheat;
-                queueButton.Text = element.Name + " Öncelik:"+element.Priority;
+                queueButton.Text = element.Name + " Öncelik:" + element.Priority;
 
-                queueButton.Width = 300;
+                queueButton.Width = 4 * siraPanel.Width / 5;
                 queueButton.Height = 100;
-                queueButton.Location = new Point(siraPanel.Size.Width / 5, i * (siraPanel.Size.Height / (customerQueue.Count + 1)));
+                queueButton.Location = new Point(siraPanel.Size.Width / 8, i * (siraPanel.Size.Height / (customerQueue.Count + 1)));
                 siraPanel.Controls.Add(queueButton);
                 siraButton.Add(queueButton);
 
@@ -401,6 +417,16 @@ namespace denemebir
         }
 
         private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label7_Click(object sender, EventArgs e)
         {
 
         }
