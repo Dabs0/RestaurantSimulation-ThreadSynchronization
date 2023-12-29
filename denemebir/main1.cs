@@ -386,6 +386,7 @@ namespace denemebir
             public int TableNo;
             public customerStatus status;
             private Thread customerThread;
+            public int beklemeSuresi=0;
             public int CompareTo(Customer other)
             {
                 // Bu örnekte öncelik yüksek olan müşteriler önce gelir
@@ -414,7 +415,7 @@ namespace denemebir
 
             private void FindTableLoop()
             {
-                int tryCount = 0;
+                beklemeSuresi = 0;
                 AnaForm1.LogQueue("findtableloop:" + this.Name);
                 while (!shouldStop )
                 {
@@ -422,7 +423,7 @@ namespace denemebir
                     
                        
 
-                        if (tryCount == 20)
+                        if (beklemeSuresi == 20)
                         {
                             customerQueue.Remove(this);
                             AnaForm1.updateQueue();
@@ -434,7 +435,7 @@ namespace denemebir
                             break;
                         }
                         findTable();
-                        tryCount++;
+                        beklemeSuresi++;
                         Thread.Sleep(donguZamanKatsayisi * simulasyonHiziZamanKatsayisi);
                     
                         
@@ -580,13 +581,14 @@ namespace denemebir
         }
         public static void Main()
         {
+            
             for (int i = 0; i < tableCount; i++)
             {
                 tableStatus[i] = -1;
             }
-
             
-            for(int i = 0;i < waiterCount; i++)
+
+            for (int i = 0;i < waiterCount; i++)
             {
                 Waiter garson = new Waiter(i, "Garson"+i);
                 waiters.Add(garson);
@@ -603,7 +605,9 @@ namespace denemebir
                 sef1Thread.Start();
                 
             }
-
+            AnaForm1.MasaAnimasyonPaneliEkle();
+            AnaForm1.AsciAnimasyonPaneliEkle();
+            AnaForm1.GarsonAnimasyonPaneliEkle();
             Thread customerGenerator = new Thread(StartRandomCustomerGenerator);
             customerGenerator.Start();
             AnaForm1.totalIncome = 0 - tableCount - waiterCount - chefCount;
@@ -611,9 +615,7 @@ namespace denemebir
 
 
 
-            AnaForm1.MasaAnimasyonPaneliEkle();
-            AnaForm1.AsciAnimasyonPaneliEkle();
-            AnaForm1.GarsonAnimasyonPaneliEkle();
+            
 
 
 

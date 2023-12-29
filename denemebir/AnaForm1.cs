@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
+using System.Xml.Linq;
 using static denemebir.main1;
 
 
@@ -360,13 +361,15 @@ namespace denemebir
             siraButton.Clear();
             int i = 0;
 
-            foreach (var element in customerQueue)
+            foreach (var element in customerQueue.ToList())
             {
                 LogQueue("customerqueuecount:" + customerQueue.Count);
                 Button queueButton = new Button();
-                queueButton.Name = element.Name;
-                queueButton.BackColor = Color.Wheat;
+                queueButton.Name = element.Name; 
+                 
+                queueButton.BackColor = Color.FromArgb(255 - (int)((double)element.beklemeSuresi / siraBeklemeZamanKatsayisi * 250), 111, 0, 255);
                 queueButton.Text = element.Name + " Öncelik:" + element.Priority;
+                
 
                 queueButton.Width = 4 * siraPanel.Width / 5;
                 queueButton.Height = 100;
@@ -377,6 +380,8 @@ namespace denemebir
                 i++;
             }
         }
+        
+    
         public static void updateLabels()
         {
             if (lblCustomerEarn.InvokeRequired)
